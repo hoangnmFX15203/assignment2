@@ -1,0 +1,30 @@
+@import '~bootstrap/scss/bootstrap';
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+
+:root {
+    --primary: #fe2c55;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style-type: none;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+}
+
+a[href] {
+    color: #333;
+    text-decoration: none;
+}

@@ -1,0 +1,22 @@
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.department-detail {
+    border: 1px solid rgb(58, 56, 56);
+    margin-bottom: 24px;
+    margin-right: 12px;
+}
+
+.department-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding-bottom: 12px;
+}
+
+.department-count {
+    padding-left: 20px;
+    font-weight: 100;
+    font-size: 16px;
+}

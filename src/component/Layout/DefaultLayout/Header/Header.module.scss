@@ -1,0 +1,42 @@
+.wraper {
+    height: 60px;
+    background-color: #0d6efd;
+    display: flex;
+}
+
+.inner {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.logo {
+    img {
+        height: 60px;
+    }
+}
+
+.tab-list {
+    width: 100%;
+
+    ul {
+        display: flex;
+        list-style-type: none;
+        align-items: center;
+        margin: 0;
+    }
+
+    li {
+        padding: 0 8px;
+    }
+
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
+}
+
+.icon {
+    padding-right: 8px;
+    color: #fff;
+}

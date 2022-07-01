@@ -1,0 +1,32 @@
+.sub-nav {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    a[href] {
+        color: rgb(52, 35, 153);
+    }
+}
+
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.staff-detail {
+    margin-bottom: 20px;
+}
+
+.staff-name {
+}
+
+.staff-info {
+}
+
+.staff-salary {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    padding: 4px 12px;
+    background: rgba(59, 59, 59, 0.7);
+    align-self: center;
+}
