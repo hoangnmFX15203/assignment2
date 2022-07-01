@@ -20,7 +20,7 @@ function Search() {
     const searchHandler = () => {
         const searchValues = document.querySelector('#search-input').value;
         const searchResult = STAFFS.filter(
-            (staff) => staff.name === searchValues,
+            (staff) => staff.name.toLowerCase() === searchValues,
         );
         setSearchResults(searchResult);
         setSearchValues('');
