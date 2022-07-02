@@ -17,7 +17,10 @@ function Staffs() {
                         <li
                             key={staff.id}
                             className={cx(
-                                'staff-content col-md-2 col-sm-4 col-6',
+                                'staff-content',
+                                'col-md-2',
+                                'col-sm-4',
+                                'col-6',
                             )}
                         >
                             <Link to={to}>

@@ -76,11 +76,14 @@ function Salary() {
                             <div
                                 key={staff.id}
                                 className={cx(
-                                    'staff-detail col-md-4 col-xs-6 col-12',
+                                    'staff-detail',
+                                    'col-md-4',
+                                    'col-xs-6',
+                                    'col-12',
                                 )}
                             >
                                 <div className={cx('staff-name')}>
-                                    {staff.name}
+                                    <p>{staff.name}</p>
                                 </div>
                                 <div className={cx('staff-info')}>
                                     <p>Mã nhân viên: {staff.id}</p>
@@ -88,7 +91,7 @@ function Salary() {
                                     <p>Số ngày làm thêm: {staff.overTime}</p>
                                 </div>
                                 <div className={cx('staff-salary')}>
-                                    Lương: {total}
+                                    <p>Lương: {total}</p>
                                 </div>
                             </div>
                         );
