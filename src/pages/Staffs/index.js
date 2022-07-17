@@ -12,11 +12,13 @@ const cx = className.bind(styles);
 function Staffs(props) {
     const staffList = useSelector((state) => state.handleStaffs.list);
     const [staffs, setStaffs] = useState(staffList);
+    const [search, setSearch] = useState('');
 
-    const handleSearch = () => {
+    const handleSearch = (e) => {
         const input = document.querySelector('#input');
+        setSearch(e.target.value);
         const searchStaffs = staffList.filter((staff) =>
-            staff.name.includes(input.value),
+            staff.name.includes(search),
         );
         setStaffs(searchStaffs);
     };
@@ -24,6 +26,10 @@ function Staffs(props) {
     useEffect(() => {
         setStaffs(staffList);
     }, [staffList]);
+
+    useEffect(() => {
+        setStaffs(staffList.filter((staff) => staff.name.includes(search)));
+    }, [search]);
 
     return (
         <div className={cx('wrapper')}>
@@ -38,10 +44,9 @@ function Staffs(props) {
                         type="text"
                         placeholder="Tìm nhân viên"
                         id="input"
+                        onChange={handleSearch}
                     />
-                    <button className={cx('search-btn')} onClick={handleSearch}>
-                        Tìm
-                    </button>
+                    <button className={cx('search-btn')}>Tìm</button>
                 </div>
             </div>
             <ul className={cx('staff-list row')}>
