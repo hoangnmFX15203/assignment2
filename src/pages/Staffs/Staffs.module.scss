@@ -3,11 +3,33 @@
         width: 100%;
     }
 
+    .sub-nav {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid rgb(148, 148, 148);
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .add-btn {
+        padding: 8px 8px;
+        cursor: pointer;
+    }
+
+    .search-input {
+        margin-right: 8px;
+    }
+
+    .search-btn {
+        width: 40px;
+        background-color: #0d6efd;
+        border: 3px solid #0de1fd;
+        border-radius: 3px;
+    }
+
     .title {
         font-size: 24px;
         font-weight: 700;
-        border-bottom: 1px solid rgb(148, 148, 148);
-        margin-bottom: 12px;
     }
 
     .staff-list {

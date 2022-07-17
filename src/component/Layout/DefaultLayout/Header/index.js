@@ -49,7 +49,7 @@ function Header() {
                     </ul>
                 </div>
                 {/* Search */}
-                <Search />
+                {/* <Search /> */}
             </div>
         </header>
     );
