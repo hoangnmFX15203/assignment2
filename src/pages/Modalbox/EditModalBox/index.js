@@ -1,71 +1,38 @@
-import styles from './AddModalBox.module.scss';
+import styles from './EditModalBox.module.scss';
 import className from 'classnames/bind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
+import dateFormat from 'dateformat';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { addNewStaff } from '~/redux/action';
-import { STAFFS, DEPARTMENTS } from '~/assets/data/staffs';
-import staffsReducer from '~/redux/reducer/staffsReducer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { DEPARTMENTS } from '~/assets/data/staffs';
+import { staffListRemain } from '~/redux/selector';
 
 const cx = className.bind(styles);
 
-function AddModalBox() {
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => {
-        setShow(false);
-    };
-
-    const handleShow = () => {
-        setShow(true);
-    };
-
-    useEffect(() => {
-        const modalBox = document.getElementById('modal-box');
-        if (show) {
-            modalBox.classList.remove('AddModalBox_hide__6I+Dq');
-            modalBox.classList.add('AddModalBox_show__s-8yj');
-        } else {
-            modalBox.classList.remove('AddModalBox_show__s-8yj');
-            modalBox.classList.add('AddModalBox_hide__6I+Dq');
-        }
-    }, [show]);
-
-    const dispatch = useDispatch();
-
-    const handleAddStaff = (data) => {
-        const id = Math.max(...STAFFS.map((staff) => staff.id)) + 1;
-        const deps = DEPARTMENTS.indexOf(
-            DEPARTMENTS.find((deps) => deps.id === data.department),
-        );
-        const staff = {
-            id: id,
-            name: data.name,
-            doB: data.doB,
-            salaryScale: data.scaleSalary,
-            startDate: data.startDate,
-            department: DEPARTMENTS[deps],
-            annualLeave: data.annualLeave,
-            overTime: data.overTime,
-            image: '/assets/images/avarta.png',
-        };
-        dispatch(addNewStaff(staff));
-        setShow(false);
-        reset();
-    };
-
+function EditModalBox(props) {
     const {
         register,
         handleSubmit,
         formState: { errors },
-        reset,
     } = useForm();
-
-    const onSubmit = (data) => {
-        console.log(data.name);
-    };
+    const dispatch = useDispatch();
+    const staffList = useSelector(staffListRemain);
+    const [show, setShow] = useState(false);
+    const staffInfo = staffList.find((staff) => staff.id === props.data);
+    const [name, setName] = useState(staffInfo.name);
+    const [dob, setDob] = useState(dateFormat(staffInfo.doB, 'dd/mm/yyyy'));5
+    useEffect(() => {
+        const modalBox = document.getElementById('modal-box');
+        if (show) {
+            modalBox.classList.remove('EditModalBox_hide__hunfN');
+            modalBox.classList.add('EditModalBox_show__-pqxJ');
+        } else {
+            modalBox.classList.remove('EditModalBox_show__-pqxJ');
+            modalBox.classList.add('EditModalBox_hide__hunfN');
+        }
+    }, [show]);
 
     function handleScaleSalary(e) {
         if (e.target.value < 1) {
@@ -75,27 +42,37 @@ function AddModalBox() {
         }
     }
 
+    const handleEditStaff = (id) => {
+        console.log(id);
+    };
     return (
         <>
-            <div className={cx('modal-icon')} onClick={handleShow}>
-                <FontAwesomeIcon icon={faSquarePlus} />
+            <div className={cx('edit-btn')} onClick={() => setShow(true)}>
+                <button>Edit</button>
             </div>
             <div className={cx('wrapper', 'hide')} id="modal-box">
                 <div className={cx('add-container', 'col-md-4')}>
                     <div className={cx('title')}>
-                        <span>thêm nhân viên</span>
-                        <div className={cx('close-icon')} onClick={handleClose}>
+                        <span>Sửa thông tin nhân viên</span>
+                        <div
+                            className={cx('close-icon')}
+                            onClick={() => {
+                                setShow(false);
+                            }}
+                        >
                             <FontAwesomeIcon icon={faXmark} />
                         </div>
                     </div>
                     <div className={cx('add-content', 'row')}>
-                        <form onSubmit={handleSubmit(handleAddStaff)}>
+                        <form onSubmit={handleSubmit(handleEditStaff)}>
                             <label htmlFor="name">Tên</label>
                             <input
+                                defaultValue={name}
                                 type="text"
                                 name="name"
                                 id="name"
                                 {...register('name', {
+                                    onChange: (e) => setName(e.target.value),
                                     required: true,
                                     minLength: 2,
                                     maxLength: 30,
@@ -117,10 +94,12 @@ function AddModalBox() {
                             )}
                             <label htmlFor="dob">Ngày sinh</label>
                             <input
+                                defaultValue={dob}
                                 type="date"
                                 name="dob"
                                 id="dob"
                                 {...register('dob', {
+                                    onChange: (e) => setDob(e.target.value),
                                     required: true,
                                 })}
                             />
@@ -193,7 +172,7 @@ function AddModalBox() {
                             />
                             <div className={cx('add-btn')}>
                                 <button className={cx('add')} type="submit">
-                                    Thêm
+                                    Sửa
                                 </button>
                             </div>
                         </form>
@@ -204,4 +183,4 @@ function AddModalBox() {
     );
 }
 
-export default AddModalBox;
+export default EditModalBox;

@@ -1,20 +1,27 @@
 export const addNewStaff = (staff) => {
     return {
-        type: 'ADD_STAFF',
+        type: 'staffList/addStaff',
         payload: staff,
     };
 };
 
 export const editStaff = (staff) => {
     return {
-        type: 'EDIT_STAFF',
+        type: 'staffList/editStaff',
         payload: staff,
     };
 };
 
 export const deleteStaff = (staff) => {
     return {
-        type: 'DELETE_STAFF',
+        type: 'staffList/deleteStaff',
         payload: staff,
+    };
+};
+
+export const searchFilter = (text) => {
+    return {
+        type: 'search/searchFilter',
+        payload: text,
     };
 };

@@ -5,31 +5,31 @@ import images from '~/assets/images';
 import { Link } from 'react-router-dom';
 import AddModalBox from '~/pages/Modalbox/AddModalBox';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    staffListRemain,
+    staffListSelector,
+    searchListSelector,
+} from '~/redux/selector';
+import { searchFilter } from '~/redux/action';
 
 const cx = className.bind(styles);
 
 function Staffs(props) {
-    const staffList = useSelector((state) => state.handleStaffs.list);
+    const staffList = useSelector(staffListRemain);
+    const searchFilterList = useSelector(searchListSelector);
     const [staffs, setStaffs] = useState(staffList);
     const [search, setSearch] = useState('');
+    const dispatch = useDispatch();
 
     const handleSearch = (e) => {
-        const input = document.querySelector('#input');
         setSearch(e.target.value);
-        const searchStaffs = staffList.filter((staff) =>
-            staff.name.includes(search),
-        );
-        setStaffs(searchStaffs);
+        dispatch(searchFilter(e.target.value));
     };
 
     useEffect(() => {
         setStaffs(staffList);
     }, [staffList]);
-
-    useEffect(() => {
-        setStaffs(staffList.filter((staff) => staff.name.includes(search)));
-    }, [search]);
 
     return (
         <div className={cx('wrapper')}>
@@ -42,6 +42,7 @@ function Staffs(props) {
                     <input
                         className={cx('search-input')}
                         type="text"
+                        value={search}
                         placeholder="Tìm nhân viên"
                         id="input"
                         onChange={handleSearch}
