@@ -12,6 +12,7 @@ import {
     searchListSelector,
 } from '~/redux/selector';
 import { searchFilter } from '~/redux/action';
+import searchReducer from '~/redux/reducer/searchReducer';
 
 const cx = className.bind(styles);
 
@@ -24,7 +25,7 @@ function Staffs(props) {
 
     const handleSearch = (e) => {
         setSearch(e.target.value);
-        dispatch(searchFilter(e.target.value));
+        dispatch(searchReducer.actions.searchFilter(e.target.value));
     };
 
     useEffect(() => {

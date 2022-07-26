@@ -1,6 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-export const staffListSelector = (state) => state.staffList.staffList;
+export const staffListSelector = (state) => {
+    return state.staffList;
+};
 
 // export const staffListSelector = (state) => {
 //     const staffListRemain = state.staffList.staffList.filter((staff) => {

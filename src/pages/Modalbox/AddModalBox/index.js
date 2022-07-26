@@ -51,7 +51,7 @@ function AddModalBox() {
             overTime: data.overTime,
             image: '/assets/images/avarta.png',
         };
-        dispatch(addNewStaff(staff));
+        dispatch(staffsReducer.actions.addNewStaff(staff));
         setShow(false);
         reset();
     };

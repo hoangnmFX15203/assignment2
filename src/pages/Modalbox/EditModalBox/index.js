@@ -22,7 +22,7 @@ function EditModalBox(props) {
     const [show, setShow] = useState(false);
     const staffInfo = staffList.find((staff) => staff.id === props.data);
     const [name, setName] = useState(staffInfo.name);
-    const [dob, setDob] = useState(dateFormat(staffInfo.doB, 'dd/mm/yyyy'));5
+    const [dob, setDob] = useState(dateFormat(staffInfo.doB, 'dd/mm/yyyy'));
     useEffect(() => {
         const modalBox = document.getElementById('modal-box');
         if (show) {
@@ -42,9 +42,7 @@ function EditModalBox(props) {
         }
     }
 
-    const handleEditStaff = (id) => {
-        console.log(id);
-    };
+    const handleEditStaff = (id) => {};
     return (
         <>
             <div className={cx('edit-btn')} onClick={() => setShow(true)}>

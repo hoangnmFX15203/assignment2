@@ -3,8 +3,8 @@ import searchReducer from '~/redux/reducer/searchReducer';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
-    staffList: staffsReducer,
-    search: searchReducer,
+    staffList: staffsReducer.reducer,
+    search: searchReducer.reducer,
 });
 
 export default rootReducer;
