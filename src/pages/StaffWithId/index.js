@@ -50,13 +50,13 @@ function StaffWithId() {
                                 <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
                                 <p>Số ngày đã làm thêm: {staff.overTime}</p>
                             </div>
-                            {/* <EditModalBox data={staff.id} /> */}
-                            {/* <div
+                            <EditModalBox data={staff.id} />
+                            <div
                                 className={cx('delete-btn')}
                                 onClick={() => handleDelete(staff.id)}
                             >
                                 <button>Delete</button>
-                            </div> */}
+                            </div>
                         </div>
                     </>
                 );

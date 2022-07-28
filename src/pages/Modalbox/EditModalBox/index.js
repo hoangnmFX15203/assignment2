@@ -7,7 +7,8 @@ import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { DEPARTMENTS } from '~/assets/data/staffs';
-import { staffListRemain } from '~/redux/selector';
+import { staffListRemain, staffListSelector } from '~/redux/selector';
+import staffsReducer from '~/redux/reducer/staffsReducer';
 
 const cx = className.bind(styles);
 
@@ -18,11 +19,20 @@ function EditModalBox(props) {
         formState: { errors },
     } = useForm();
     const dispatch = useDispatch();
-    const staffList = useSelector(staffListRemain);
+    const staffList = useSelector(staffListSelector);
     const [show, setShow] = useState(false);
-    const staffInfo = staffList.find((staff) => staff.id === props.data);
+    const staffInfo = staffList.find((staff) => {
+        return staff.id == props.data;
+    });
     const [name, setName] = useState(staffInfo.name);
     const [dob, setDob] = useState(dateFormat(staffInfo.doB, 'dd/mm/yyyy'));
+    const [startDate, setStartDate] = useState(
+        dateFormat(staffInfo.startDate, 'dd/mm/yyyy'),
+    );
+    const [salaryScale, setSalaryScale] = useState(staffInfo.salaryScale);
+    const [annualLeave, setAnnualLeave] = useState(staffInfo.annualLeave);
+    const [overTime, setOverTime] = useState(staffInfo.overTime);
+
     useEffect(() => {
         const modalBox = document.getElementById('modal-box');
         if (show) {
@@ -42,7 +52,14 @@ function EditModalBox(props) {
         }
     }
 
-    const handleEditStaff = (id) => {};
+    const handleEditStaff = (staff) => {
+        const data = {
+            ...staff,
+            id: props.data,
+            image: '/assets/images/avarta.png',
+        };
+        dispatch(staffsReducer.actions.editStaff(data));
+    };
     return (
         <>
             <div className={cx('edit-btn')} onClick={() => setShow(true)}>
@@ -111,10 +128,13 @@ function EditModalBox(props) {
                             )}
                             <label htmlFor="startDate">Ngày bắt đầu</label>
                             <input
+                                defaultValue={startDate}
                                 type="date"
                                 name="startDate"
                                 id="startDate"
                                 {...register('startDate', {
+                                    onChange: (e) =>
+                                        setStartDate(e.target.value),
                                     required: true,
                                 })}
                             />
@@ -128,6 +148,7 @@ function EditModalBox(props) {
                             )}
                             <label htmlFor="department">Phòng ban</label>
                             <select
+                                defaultValue={staffInfo.department.id}
                                 name="department"
                                 id="department"
                                 {...register('department')}
@@ -141,14 +162,16 @@ function EditModalBox(props) {
                             <br />
                             <label htmlFor="scaleSalary">Hệ số lương</label>
                             <input
+                                defaultValue={salaryScale}
                                 type="number"
-                                name="scaleSalary"
+                                name="salaryScale"
                                 step="any"
-                                id="scaleSalary"
+                                id="salaryScale"
                                 placeholder="1.0 -> 3.0"
                                 {...register('scaleSalary', {
                                     onChange: (e) => {
                                         handleScaleSalary(e);
+                                        setSalaryScale(e.target.value);
                                     },
                                 })}
                             />
@@ -156,17 +179,25 @@ function EditModalBox(props) {
                                 Số ngày nghỉ còn lại
                             </label>
                             <input
+                                defaultValue={annualLeave}
                                 type="text"
                                 name="annualLeave"
                                 id="annualLeave"
-                                {...register('annualLeave')}
+                                {...register('annualLeave', {
+                                    onChange: (e) =>
+                                        setAnnualLeave(e.target.value),
+                                })}
                             />
                             <label htmlFor="overTime">Số ngày làm thêm</label>
                             <input
+                                defaultValue={overTime}
                                 type="text"
                                 name="overTime"
                                 id="overTime"
-                                {...register('overTime')}
+                                {...register('overTime', {
+                                    onChange: (e) =>
+                                        setOverTime(e.target.value),
+                                })}
                             />
                             <div className={cx('add-btn')}>
                                 <button className={cx('add')} type="submit">

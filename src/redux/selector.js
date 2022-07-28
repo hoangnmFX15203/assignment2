@@ -17,6 +17,7 @@ export const staffListRemain = createSelector(
     staffListSelector,
     searchListSelector,
     (staffList, searchList) => {
+        console.log(staffList);
         return staffList.filter((staff) => {
             return staff.name.includes(searchList.search);
         });
