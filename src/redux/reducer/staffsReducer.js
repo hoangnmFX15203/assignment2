@@ -38,23 +38,21 @@ const staffsReducer = createSlice({
     initialState: STAFFS,
     reducers: {
         addNewStaff: (state, action) => {
-            console.log(state);
             const newList = [...state];
-
-            console.log(newList);
             newList.push(action.payload);
             return newList;
         },
         editStaff: (state, action) => {
             console.log(state);
             console.log(action);
-            const newList = [...state];
+            const newList = [...current(state)];
             console.log(current(newList));
-            const staff = newList.find(
+            let newStaff = newList.find(
                 (state) => state.id === action.payload.id,
             );
-            console.log(staff);
-            return staff;
+            console.log(newStaff);
+            newStaff = action.payload;
+            return newStaff;
         },
     },
 });

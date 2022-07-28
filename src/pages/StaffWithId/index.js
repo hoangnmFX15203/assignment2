@@ -15,11 +15,14 @@ function StaffWithId() {
     const staffList = useSelector(staffListSelector);
     const [staffs, setStaffs] = useState([]);
     const { id } = useParams();
+    // const [staff, setStaff] = useState()
 
+    const staff = staffList.filter((s) => s.id === +id);
     useEffect(() => {
-        const staff = staffList.filter((s) => s.id === +id);
         setStaffs(staff);
     }, [id]);
+
+    useEffect(() => {}, [staff]);
 
     const handleDelete = (id) => {};
     return (

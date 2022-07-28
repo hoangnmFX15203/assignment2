@@ -53,12 +53,22 @@ function EditModalBox(props) {
     }
 
     const handleEditStaff = (staff) => {
+        const deps = DEPARTMENTS.indexOf(
+            DEPARTMENTS.find((deps) => deps.id === staff.department),
+        );
         const data = {
-            ...staff,
             id: props.data,
+            name: staff.name,
+            doB: staff.doB,
+            salaryScale: staff.scaleSalary,
+            startDate: staff.startDate,
+            department: DEPARTMENTS[deps],
+            annualLeave: staff.annualLeave,
+            overTime: staff.overTime,
             image: '/assets/images/avarta.png',
         };
         dispatch(staffsReducer.actions.editStaff(data));
+        setShow(!show);
     };
     return (
         <>
@@ -107,13 +117,13 @@ function EditModalBox(props) {
                                     )}
                                 </ul>
                             )}
-                            <label htmlFor="dob">Ngày sinh</label>
+                            <label htmlFor="doB">Ngày sinh</label>
                             <input
                                 defaultValue={dob}
                                 type="date"
-                                name="dob"
-                                id="dob"
-                                {...register('dob', {
+                                name="doB"
+                                id="doB"
+                                {...register('doB', {
                                     onChange: (e) => setDob(e.target.value),
                                     required: true,
                                 })}
