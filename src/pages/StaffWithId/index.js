@@ -7,27 +7,42 @@ import images from '~/assets/images';
 import dateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
 import EditModalBox from '~/pages/Modalbox/EditModalBox';
-import { staffListRemain, staffListSelector } from '~/redux/selector';
+import { departmentSelector, staffListSelector } from '~/redux/selector';
+import staffsReducer from '~/redux/reducer/staffsReducer';
+import { fetchStaff, fetchDepartment } from '~/redux/reducer/staffsReducer';
 
 const cx = className.bind(styles);
 
 function StaffWithId() {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchStaff());
+        dispatch(fetchDepartment());
+    }, []);
     const staffList = useSelector(staffListSelector);
+    const departmentList = useSelector(departmentSelector);
+    const [staffListApi, setStaffListApi] = useState(staffList);
     const [staffs, setStaffs] = useState([]);
     const { id } = useParams();
-    // const [staff, setStaff] = useState()
+    // const [staffDetail, setStaffDetail] = useState(staffEdit);
+    // const staffEdit = staffList.find((s) => s.id === +id);
 
-    const staff = staffList.filter((s) => s.id === +id);
     useEffect(() => {
+        const staff = staffListApi.filter((s) => s.id === +id);
         setStaffs(staff);
     }, [id]);
 
-    useEffect(() => {}, [staff]);
+    // useEffect(() => {
+    //     setStaffDetail(staffEdit);
+    // }, [staffDetail]);
 
-    const handleDelete = (id) => {};
     return (
         <div className={cx('wrapper')}>
             {staffs.map((staff) => {
+                console.log(staff);
+                const department = departmentList.find(
+                    (deps) => deps.id === staff.departmentId,
+                );
                 const img = '~/assets/images/avarta.png';
                 return (
                     <>
@@ -38,6 +53,7 @@ function StaffWithId() {
                         <div className={cx('staff-detail row')} key={staff.id}>
                             <div className={cx('staff-img col-md-3')}>
                                 <img src={images.avarta} alt={staff.name} />
+                                <EditModalBox data={id} />
                             </div>
                             <div className={cx('staff-info col-md-9')}>
                                 <h4>Họ và tên: {staff.name}</h4>
@@ -49,16 +65,11 @@ function StaffWithId() {
                                     Ngày vào công ty:{' '}
                                     {dateFormat(staff.startDate, 'dd/mm/yyyy')}
                                 </p>
-                                <p>Phòng ban: {staff.department.name}</p>
-                                <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
-                                <p>Số ngày đã làm thêm: {staff.overTime}</p>
-                            </div>
-                            <EditModalBox data={staff.id} />
-                            <div
-                                className={cx('delete-btn')}
-                                onClick={() => handleDelete(staff.id)}
-                            >
-                                <button>Delete</button>
+                                <p>Phòng ban: {department.name}</p>
+                                <p>
+                                    Số ngày nghỉ còn lại: {staff?.annualLeave}
+                                </p>
+                                <p>Số ngày đã làm thêm: {staff?.overTime}</p>
                             </div>
                         </div>
                     </>

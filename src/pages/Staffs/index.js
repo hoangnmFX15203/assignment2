@@ -12,25 +12,42 @@ import {
     searchListSelector,
 } from '~/redux/selector';
 import { searchFilter } from '~/redux/action';
+import EditModalBox from '../Modalbox/EditModalBox';
 import searchReducer from '~/redux/reducer/searchReducer';
+import { fetchStaff, deleteStaff } from '~/redux/reducer/staffsReducer';
 
 const cx = className.bind(styles);
 
 function Staffs(props) {
+    const [staffId, setStaffId] = useState('');
+    // const [show, setShow] = useState(false);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchStaff());
+    }, [dispatch]);
+    // const list = useSelector(staffListSelector);
     const staffList = useSelector(staffListRemain);
     const searchFilterList = useSelector(searchListSelector);
     const [staffs, setStaffs] = useState(staffList);
     const [search, setSearch] = useState('');
-    const dispatch = useDispatch();
+
+    useEffect(() => {
+        setStaffs(staffList);
+    }, [staffList]);
 
     const handleSearch = (e) => {
         setSearch(e.target.value);
         dispatch(searchReducer.actions.searchFilter(e.target.value));
     };
 
-    useEffect(() => {
-        setStaffs(staffList);
-    }, [staffList]);
+    // const handleEdit = (id) => {
+    //     setShow(!show);
+    //     setStaffId(id);
+    // };
+
+    const handleDelete = (id) => {
+        dispatch(deleteStaff(id));
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -52,7 +69,7 @@ function Staffs(props) {
                 </div>
             </div>
             <ul className={cx('staff-list row')}>
-                {staffs.map((staff) => {
+                {staffList.map((staff) => {
                     const to = `/staff/${staff.id}`;
                     return (
                         <li
@@ -72,10 +89,29 @@ function Staffs(props) {
                                     <p>{staff.name}</p>
                                 </div>
                             </Link>
+                            <div className={cx('custom-btn')}>
+                                {/* <button
+                                    className={cx('edit-btn')}
+                                    onClick={() => handleEdit(staff.id)}
+                                >
+                                    Edit
+                                </button> */}
+                                {/* <EditModalBox
+                                    onClick={() => setStaffId(staff.id)}
+                                    data={staffId}
+                                /> */}
+                                <button
+                                    className={cx('delete-btn')}
+                                    onClick={() => handleDelete(staff.id)}
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </li>
                     );
                 })}
             </ul>
+            {/* <EditModalBox data={staffId} show={show} /> */}
         </div>
     );
 }

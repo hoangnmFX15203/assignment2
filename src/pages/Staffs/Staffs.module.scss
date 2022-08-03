@@ -48,13 +48,15 @@
     .staff-content {
         margin: 8px 4px;
         display: flex;
-        height: 212px;
+        height: 240px;
         border-radius: 3px;
         border: 1px solid #f3f2f2;
         padding: 0;
         justify-content: center;
         align-items: center;
         width: 15.5% !important;
+        flex-wrap: wrap;
+        padding-bottom: 8px;
     }
 
     .staff-image {
@@ -75,6 +77,13 @@
             text-decoration: none;
             margin-bottom: 0;
         }
+    }
+
+    .delete-btn {
+        display: block;
+        border: none;
+        background-color: rgb(175, 37, 37);
+        width: 120px;
     }
 }
 

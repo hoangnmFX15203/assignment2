@@ -3,44 +3,53 @@ import className from 'classnames/bind';
 import { STAFFS } from '~/assets/data/staffs';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { staffListSelector, salarySelector } from '~/redux/selector';
+import { fetchStaff, fetchSalary } from '~/redux/reducer/staffsReducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 const cx = className.bind(styles);
 
 function Salary() {
+    const dispatch = useDispatch(staffListSelector);
+    useEffect(() => {
+        dispatch(fetchStaff());
+        dispatch(fetchSalary());
+    }, []);
+    const staffListSalary = useSelector(salarySelector);
+
     const [sort, setSort] = useState(0);
-    const [staffs, setStaffs] = useState(STAFFS);
+    const [staffs, setStaffs] = useState(staffListSalary);
 
     const sortHandler = (e) => {
-        console.log(e.target.value);
         setSort(e.target.value);
     };
 
     useEffect(() => {
         if (sort == '1') {
             const increaseSalary = [...staffs].sort(function (a, b) {
-                const salaryA = Math.round(
-                    a.salaryScale * 3000000 + a.overTime * 200000,
-                );
-                const salaryB = Math.round(
-                    b.salaryScale * 3000000 + b.overTime * 200000,
-                );
-                return salaryA - salaryB;
+                // const salaryA = Math.round(
+                //     a.salaryScale * 3000000 + a.overTime * 200000,
+                // );
+                // const salaryB = Math.round(
+                //     b.salaryScale * 3000000 + b.overTime * 200000,
+                // );
+                return a.salary - b.salary;
             });
 
             setStaffs(increaseSalary);
         } else if (sort == '2') {
             const decreaseSalary = [...staffs].sort(function (a, b) {
-                const salaryA = Math.round(
-                    a.salaryScale * 3000000 + a.overTime * 200000,
-                );
-                const salaryB = Math.round(
-                    b.salaryScale * 3000000 + b.overTime * 200000,
-                );
-                return salaryB - salaryA;
+                // const salaryA = Math.round(
+                //     a.salaryScale * 3000000 + a.overTime * 200000,
+                // );
+                // const salaryB = Math.round(
+                //     b.salaryScale * 3000000 + b.overTime * 200000,
+                // );
+                return b.salary - a.salary;
             });
             setStaffs(decreaseSalary);
         } else {
-            setStaffs(STAFFS);
+            setStaffs(staffListSalary);
         }
     }, [sort]);
     return (
@@ -51,7 +60,7 @@ function Salary() {
                     <span> / Bảng lương</span>
                 </div>
                 <div className={cx('sort-by')}>
-                    <label for={'sortBy'} className={cx('label')}>
+                    <label htmlFor={'sortBy'} className={cx('label')}>
                         Sort by :{' '}
                     </label>
                     <select
@@ -68,10 +77,7 @@ function Salary() {
             <div className={cx('wrapper')}>
                 {staffs &&
                     staffs.map((staff) => {
-                        const total = Math.round(
-                            staff.salaryScale * 3000000 +
-                                staff.overTime * 200000,
-                        );
+                        const total = Math.round(staff.salary);
                         return (
                             <div
                                 key={staff.id}

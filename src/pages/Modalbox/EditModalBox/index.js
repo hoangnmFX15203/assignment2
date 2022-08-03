@@ -1,18 +1,25 @@
 import styles from './EditModalBox.module.scss';
 import className from 'classnames/bind';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import dateFormat from 'dateformat';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { DEPARTMENTS } from '~/assets/data/staffs';
-import { staffListRemain, staffListSelector } from '~/redux/selector';
+import {
+    staffListRemain,
+    staffListSelector,
+    departmentSelector,
+} from '~/redux/selector';
 import staffsReducer from '~/redux/reducer/staffsReducer';
+import { updateStaff } from '~/redux/reducer/staffsReducer';
 
 const cx = className.bind(styles);
 
 function EditModalBox(props) {
+    console.log(props.data);
     const {
         register,
         handleSubmit,
@@ -20,10 +27,19 @@ function EditModalBox(props) {
     } = useForm();
     const dispatch = useDispatch();
     const staffList = useSelector(staffListSelector);
+    const departmentList = useSelector(departmentSelector);
     const [show, setShow] = useState(false);
-    const staffInfo = staffList.find((staff) => {
-        return staff.id == props.data;
-    });
+    const [staffInfo, setStaffInfo] = useState({});
+    useEffect(() => {
+        const staff = staffList.find((staff) => {
+            return staff.id == props.data;
+        });
+        setStaffInfo(staff);
+    }, [staffList]);
+
+    // const staffInfo = staffList.find((staff) => {
+    //     return staff.id === props.data;
+    // });
     const [name, setName] = useState(staffInfo.name);
     const [dob, setDob] = useState(dateFormat(staffInfo.doB, 'dd/mm/yyyy'));
     const [startDate, setStartDate] = useState(
@@ -34,7 +50,7 @@ function EditModalBox(props) {
     const [overTime, setOverTime] = useState(staffInfo.overTime);
 
     useEffect(() => {
-        const modalBox = document.getElementById('modal-box');
+        const modalBox = document.getElementById('edit-modal-box');
         if (show) {
             modalBox.classList.remove('EditModalBox_hide__hunfN');
             modalBox.classList.add('EditModalBox_show__-pqxJ');
@@ -53,8 +69,8 @@ function EditModalBox(props) {
     }
 
     const handleEditStaff = (staff) => {
-        const deps = DEPARTMENTS.indexOf(
-            DEPARTMENTS.find((deps) => deps.id === staff.department),
+        const deps = departmentList.indexOf(
+            departmentList.find((deps) => deps.id === staff.department),
         );
         const data = {
             id: props.data,
@@ -62,12 +78,14 @@ function EditModalBox(props) {
             doB: staff.doB,
             salaryScale: staff.scaleSalary,
             startDate: staff.startDate,
-            department: DEPARTMENTS[deps],
+            departmentId: staff.department,
+            // departmentList[deps],
             annualLeave: staff.annualLeave,
             overTime: staff.overTime,
             image: '/assets/images/avarta.png',
         };
-        dispatch(staffsReducer.actions.editStaff(data));
+        // dispatch(staffsReducer.actions.editStaff(data));
+        dispatch(updateStaff(data));
         setShow(!show);
     };
     return (
@@ -75,15 +93,13 @@ function EditModalBox(props) {
             <div className={cx('edit-btn')} onClick={() => setShow(true)}>
                 <button>Edit</button>
             </div>
-            <div className={cx('wrapper', 'hide')} id="modal-box">
+            <div className={cx('wrapper', 'hide')} id="edit-modal-box">
                 <div className={cx('add-container', 'col-md-4')}>
                     <div className={cx('title')}>
                         <span>Sửa thông tin nhân viên</span>
                         <div
                             className={cx('close-icon')}
-                            onClick={() => {
-                                setShow(false);
-                            }}
+                            onClick={() => setShow(false)}
                         >
                             <FontAwesomeIcon icon={faXmark} />
                         </div>
@@ -158,7 +174,6 @@ function EditModalBox(props) {
                             )}
                             <label htmlFor="department">Phòng ban</label>
                             <select
-                                defaultValue={staffInfo.department.id}
                                 name="department"
                                 id="department"
                                 {...register('department')}
@@ -185,6 +200,7 @@ function EditModalBox(props) {
                                     },
                                 })}
                             />
+                            <br />
                             <label htmlFor="annual-leave">
                                 Số ngày nghỉ còn lại
                             </label>
@@ -198,6 +214,7 @@ function EditModalBox(props) {
                                         setAnnualLeave(e.target.value),
                                 })}
                             />
+                            <br />
                             <label htmlFor="overTime">Số ngày làm thêm</label>
                             <input
                                 defaultValue={overTime}

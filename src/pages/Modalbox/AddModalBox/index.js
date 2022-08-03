@@ -5,14 +5,30 @@ import { faXmark, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { addNewStaff } from '~/redux/action';
+import {
+    staffListRemain,
+    staffListSelector,
+    searchListSelector,
+    departmentSelector,
+} from '~/redux/selector';
+// import { addNewStaff } from '~/redux/action';
 import { STAFFS, DEPARTMENTS } from '~/assets/data/staffs';
 import staffsReducer from '~/redux/reducer/staffsReducer';
+import { addNewStaff } from '~/redux/reducer/staffsReducer';
+import { fetchStaff, fetchDepartment } from '~/redux/reducer/staffsReducer';
 
 const cx = className.bind(styles);
 
 function AddModalBox() {
+    useEffect(() => {
+        dispatch(fetchStaff());
+        dispatch(fetchDepartment());
+    }, []);
+    const departmentList = useSelector(departmentSelector);
+    const staffList = useSelector(staffListSelector);
     const [show, setShow] = useState(false);
+    const [staffs, setStaff] = useState(staffList);
+    const [department, setDepartment] = useState(departmentList);
 
     const handleClose = () => {
         setShow(false);
@@ -36,9 +52,9 @@ function AddModalBox() {
     const dispatch = useDispatch();
 
     const handleAddStaff = (data) => {
-        const id = Math.max(...STAFFS.map((staff) => staff.id)) + 1;
-        const deps = DEPARTMENTS.indexOf(
-            DEPARTMENTS.find((deps) => deps.id === data.department),
+        const id = Math.max(...staffs.map((staff) => staff.id)) + 1;
+        const deps = departmentList.findIndex(
+            (deps) => deps.id === data.department,
         );
         const staff = {
             id: id,
@@ -46,12 +62,16 @@ function AddModalBox() {
             doB: data.doB,
             salaryScale: data.scaleSalary,
             startDate: data.startDate,
-            department: DEPARTMENTS[deps],
+            departmentId: data.department,
+            // departmentList[deps],
             annualLeave: data.annualLeave,
             overTime: data.overTime,
             image: '/assets/images/avarta.png',
         };
-        dispatch(staffsReducer.actions.addNewStaff(staff));
+        console.log(staff);
+        // dispatch(staffsReducer.actions.addNewStaff(staff));
+        dispatch(addNewStaff(staff));
+        dispatch(fetchStaff());
         setShow(false);
         reset();
     };
@@ -63,9 +83,7 @@ function AddModalBox() {
         reset,
     } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data.name);
-    };
+    const onSubmit = (data) => {};
 
     function handleScaleSalary(e) {
         if (e.target.value < 1) {
@@ -115,12 +133,12 @@ function AddModalBox() {
                                     )}
                                 </ul>
                             )}
-                            <label htmlFor="dob">Ngày sinh</label>
+                            <label htmlFor="doB">Ngày sinh</label>
                             <input
                                 type="date"
-                                name="dob"
-                                id="dob"
-                                {...register('dob', {
+                                name="doB"
+                                id="doB"
+                                {...register('doB', {
                                     required: true,
                                 })}
                             />
@@ -175,6 +193,7 @@ function AddModalBox() {
                                     },
                                 })}
                             />
+                            <br />
                             <label htmlFor="annual-leave">
                                 Số ngày nghỉ còn lại
                             </label>
@@ -184,6 +203,7 @@ function AddModalBox() {
                                 id="annualLeave"
                                 {...register('annualLeave')}
                             />
+                            <br />
                             <label htmlFor="overTime">Số ngày làm thêm</label>
                             <input
                                 type="text"
