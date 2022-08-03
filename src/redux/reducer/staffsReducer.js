@@ -103,7 +103,9 @@ const staffsReducer = createSlice({
             })
             .addCase(addNewStaff.fulfilled, (state, action) => {
                 console.log('addStaff', action.payload);
-                return (state.staffList = action.payload);
+                const newStaffList = state.staffList;
+                state.staffList = action.payload;
+                return newStaffList;
             })
             .addCase(updateStaff.fulfilled, (state, action) => {
                 console.log('updateStaff', action.payload);
@@ -115,9 +117,11 @@ const staffsReducer = createSlice({
             })
             .addCase(deleteStaff.fulfilled, (state, action) => {
                 console.log(action);
-                const newList = state.staffList.filter(
-                    (staff) => staff.id !== action.payload,
-                );
+                // const newList = state.staffList.filter(
+                //     (staff) => staff.id !== action.payload,
+                // );
+                const newList = state.staffList;
+                state.staffList = action.payload;
                 return newList;
             });
     },
@@ -187,6 +191,8 @@ export const deleteStaff = createAsyncThunk('staff/deleteStaff', async (id) => {
             body: JSON.stringify(id),
         },
     );
+    const data = await res.json();
+    return data;
 });
 
 export default staffsReducer;
