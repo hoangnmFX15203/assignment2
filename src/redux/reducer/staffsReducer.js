@@ -102,16 +102,19 @@ const staffsReducer = createSlice({
                 state.salary = action.payload;
             })
             .addCase(addNewStaff.fulfilled, (state, action) => {
-                console.log(action.payload);
-                return state.staffList.push(action.payload);
+                console.log('addStaff', action.payload);
+                return (state.staffList = action.payload);
             })
             .addCase(updateStaff.fulfilled, (state, action) => {
+                console.log('updateStaff', action.payload);
+
                 const staffIndex = state.staffList.findIndex(
                     (x) => x.id === action.payload.id,
                 );
-                state.staffList[staffIndex] = action.payload;
+                state.staffList = action.payload;
             })
             .addCase(deleteStaff.fulfilled, (state, action) => {
+                console.log(action);
                 const newList = state.staffList.filter(
                     (staff) => staff.id !== action.payload,
                 );
@@ -148,7 +151,6 @@ export const fetchSalary = createAsyncThunk('staffs/Salary', async () => {
 export const addNewStaff = createAsyncThunk(
     'staffs/addNewStaff',
     async (newStaff) => {
-        console.log(newStaff);
         const res = await fetch('https://rjs101xbackend.herokuapp.com/staffs', {
             method: 'POST',
             body: JSON.stringify(newStaff),

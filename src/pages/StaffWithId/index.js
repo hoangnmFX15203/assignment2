@@ -32,9 +32,10 @@ function StaffWithId() {
         setStaffs(staff);
     }, [id]);
 
-    // useEffect(() => {
-    //     setStaffDetail(staffEdit);
-    // }, [staffDetail]);
+    useEffect(() => {
+        const staff = staffList.filter((s) => s.id === +id);
+        setStaffs(staff);
+    }, [id, staffList]);
 
     return (
         <div className={cx('wrapper')}>

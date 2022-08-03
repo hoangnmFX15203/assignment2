@@ -93,7 +93,10 @@ function EditModalBox(props) {
             <div className={cx('edit-btn')} onClick={() => setShow(true)}>
                 <button>Edit</button>
             </div>
-            <div className={cx('wrapper', 'hide')} id="edit-modal-box">
+            <div
+                className={cx('wrapper', show ? 'show' : 'hide')}
+                id="edit-modal-box"
+            >
                 <div className={cx('add-container', 'col-md-4')}>
                     <div className={cx('title')}>
                         <span>Sửa thông tin nhân viên</span>

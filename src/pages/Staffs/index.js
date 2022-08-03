@@ -31,9 +31,9 @@ function Staffs(props) {
     const [staffs, setStaffs] = useState(staffList);
     const [search, setSearch] = useState('');
 
-    useEffect(() => {
-        setStaffs(staffList);
-    }, [staffList]);
+    // useEffect(() => {
+    //     setStaffs(staffList);
+    // }, [staffList]);
 
     const handleSearch = (e) => {
         setSearch(e.target.value);

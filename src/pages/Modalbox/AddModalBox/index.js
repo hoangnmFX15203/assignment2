@@ -68,7 +68,6 @@ function AddModalBox() {
             overTime: data.overTime,
             image: '/assets/images/avarta.png',
         };
-        console.log(staff);
         // dispatch(staffsReducer.actions.addNewStaff(staff));
         dispatch(addNewStaff(staff));
         dispatch(fetchStaff());
@@ -98,7 +97,10 @@ function AddModalBox() {
             <div className={cx('modal-icon')} onClick={handleShow}>
                 <FontAwesomeIcon icon={faSquarePlus} />
             </div>
-            <div className={cx('wrapper', 'hide')} id="modal-box">
+            <div
+                className={cx('wrapper', show ? 'show' : 'hide')}
+                id="modal-box"
+            >
                 <div className={cx('add-container', 'col-md-4')}>
                     <div className={cx('title')}>
                         <span>thêm nhân viên</span>
